@@ -62,6 +62,8 @@ export class GameComponent implements OnInit {
     this.interval = setInterval(() => {
       if(this.timeLeft > 0) {
         this.timeLeft--;
+      } else if (this.timeLeft === 0) {
+        clearInterval(this.interval);
       } else {
         this.timeLeft = 120;
       }

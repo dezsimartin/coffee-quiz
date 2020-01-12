@@ -11,6 +11,7 @@
           </div>
           <div *ngIf="tile.text === 'Answer' && timerStarted"> 
             <input type="text" [(ngModel)]="answer" placeholder="Type your answer here">
+            <div *ngIf="timeLeft === 0">{{clue.answer}}</div>
           </div>
           <div *ngIf="tile.text === 'Time'">
             <div *ngIf="!timerStarted">
@@ -20,6 +21,7 @@
             </div>
             <br>
               {{timeLeft}} Seconds Left....
+
             </div>
 
         </mat-grid-tile>
