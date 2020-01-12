@@ -103,9 +103,7 @@ export class GameComponent implements OnInit {
   public countCorrectAnswers() {
     let counter = 0;
     this.requestedClues.forEach(data => {
-    let transformedAnswer = data.answer.toString().toLowerCase().replace(/\s/g, "");
-    console.log(transformedAnswer);
-      if(data.answer.toString().toLowerCase().replace(/\s/g, "") === data.user_answer.toString().toLowerCase().replace(/\s/g, "")){
+      if(data.user_answer && (data.answer.toString().toLowerCase().replace(/\s/g, "") === data.user_answer.toString().toLowerCase().replace(/\s/g, ""))){
         counter++;
       }
       this.correctAnswers = counter;
