@@ -1,0 +1,10 @@
+.content {
+    box-shadow: none;
+    max-width: auto;
+    min-width: 65vh;
+    max-height: auto;
+    min-height: 70vh;
+    margin: 5%;
+    background-color:#69f0ae;
+  }
+  
