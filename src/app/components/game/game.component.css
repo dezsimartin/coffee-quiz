@@ -1,4 +1,6 @@
 .game {
     padding: 15px;
     margin: 8px;
+    justify-content: center;
+    text-align: center;
 }

@@ -26,6 +26,10 @@ export class GameComponent implements OnInit {
     {text: 'Answer', cols: 2, rows: 1, color: 'lightgrey'},
   ];
 
+  public interval;
+  public timeLeft: number;
+  public timerStarted: boolean = false;
+
   constructor(private api: ApiCommunicationService) { }
 
   ngOnInit() {
@@ -33,6 +37,11 @@ export class GameComponent implements OnInit {
   }
 
   public getRandomClue() {
+    if(this.timerStarted) {
+      this.timerStarted = !this.timerStarted;
+      clearInterval(this.interval);
+      this.timeLeft = null;
+    }
     if(this.answer){
       this.requestedClues.filter(data => { 
         if(data.id === this.clue.id){
@@ -46,5 +55,16 @@ export class GameComponent implements OnInit {
       this.requestedClues.push(this.clue);
       console.log(this.requestedClues);
     });
+  }
+
+  public  startTimer() {
+    this.timerStarted = true;
+    this.interval = setInterval(() => {
+      if(this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        this.timeLeft = 120;
+      }
+    },1000)
   }
 }
