@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
-import { MatCardModule, MatGridListModule, MatToolbarModule, MatButtonModule, MatAutocompleteModule, MatInputModule } from "@angular/material/";
+import { MatCardModule, MatGridListModule, MatToolbarModule, MatButtonModule, MatAutocompleteModule, MatInputModule, MatSelectModule } from "@angular/material/";
 
 
 
@@ -36,7 +36,8 @@ import { GameComponent } from './components/game/game.component';
     MatGridListModule,
     MatButtonModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [
     ApiCommunicationService

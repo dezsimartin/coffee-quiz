@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiCommunicationService } from 'src/app/services/api-communication.service';
 import { Clue } from 'src/app/models/Clue.model';
+import { Category } from 'src/app/models/Category. model';
 
 export interface Tile {
   color: string;
@@ -16,12 +17,15 @@ export interface Tile {
 })
 export class GameComponent implements OnInit {
   
+  public categories: Array<Category>;
+  public selectedCategory: number;
   public clue: Clue;
   public answer: string;
+  public correctAnswers: number = 0;
   public requestedClues: Array<Clue> = [];
   public tiles: Tile[] = [
-    {text: 'Question' , cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Skip', cols: 1, rows: 2, color: 'lightgreen'},
+    {text: 'Question' , cols: 3, rows: 1, color: 'lightgreen'},
+    {text: 'Skip', cols: 1, rows: 2, color: 'lightblue'},
     {text: 'Time', cols: 1, rows: 1, color: 'lightpink'},
     {text: 'Answer', cols: 2, rows: 1, color: 'lightgrey'},
   ];
@@ -33,10 +37,11 @@ export class GameComponent implements OnInit {
   constructor(private api: ApiCommunicationService) { }
 
   ngOnInit() {
+    this.api.getCategories().subscribe(data => { this.categories = data; console.log(this.categories); });
     this.getRandomClue();
   }
 
-  public getRandomClue() {
+  public getNextQuestion() {
     if(this.timerStarted) {
       this.timerStarted = !this.timerStarted;
       clearInterval(this.interval);
@@ -49,12 +54,37 @@ export class GameComponent implements OnInit {
         }
       })
     }
+    this.countCorrectAnswers();
+    if(this.selectedCategory){
+      this.getCategorizedClue();
+    } else {
+      this.getRandomClue();
+    }
+  }
+
+  public getRandomClue() {
     this.api.getRandomClue().subscribe(data => {
       this.clue = data[0];
       this.clue.user_answer = null;
       this.requestedClues.push(this.clue);
       console.log(this.requestedClues);
     });
+  }
+
+  public getCategorizedClue(){
+    this.api.getCategoryClue(this.selectedCategory).subscribe(data => {
+      console.log(data);
+      let rng = Math.floor((Math.random() * data.length - 1) + 1);
+      console.log(rng);
+      this.clue = data[rng];
+      this.clue.user_answer = null;
+      this.requestedClues.push(this.clue);
+      console.log(this.requestedClues);
+    })
+  }
+
+  public showAnswer() {
+    this.timeLeft = 0;
   }
 
   public  startTimer() {
@@ -68,5 +98,15 @@ export class GameComponent implements OnInit {
         this.timeLeft = 120;
       }
     },1000)
+  }
+
+  public countCorrectAnswers() {
+    let counter = 0;
+    this.requestedClues.forEach(data => {
+      if(data.answer === data.user_answer){
+        counter++;
+      }
+      this.correctAnswers = counter;
+    })
   }
 }

@@ -1,4 +1,17 @@
 <div class="game">
+<mat-card>
+<mat-form-field color="accent">
+    <mat-label>Select a category</mat-label>
+    <mat-select [(ngModel)]="selectedCategory">
+        <mat-option [value]='null'> None</mat-option>
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        {{category.title}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
+
+</mat-card>
+
 <div *ngIf="clue">
     <mat-grid-list cols="4" rowHeight="300px">
         <mat-grid-tile
@@ -7,23 +20,27 @@
             [rowspan]="tile.rows"
             [style.background]="tile.color">
           <div *ngIf="tile.text === 'Question' && timerStarted">Question: {{ clue.question}} </div>
-          <div *ngIf="tile.text === 'Skip'"><button mat-flat-button color="primary" (click)="getRandomClue()">Next question</button>
-          </div>
-          <div *ngIf="tile.text === 'Answer' && timerStarted"> 
+          <div *ngIf="tile.text === 'Question' && !timerStarted"> Please set up the timer</div>
+          <div *ngIf="tile.text === 'Skip'">
+                <button mat-flat-button color="primary" [disabled]='!timerStarted' (click)="getNextQuestion()">Next question</button>
+                <br>
+                <button mat-flat-button color="primary" [disabled]='!timerStarted' (click)="showAnswer()">Show Answer</button>
+                <br>
+                Correct answers: {{correctAnswers}}
+        </div>
+        <div *ngIf="tile.text === 'Answer' && timerStarted"> 
             <input type="text" [(ngModel)]="answer" placeholder="Type your answer here">
             <div *ngIf="timeLeft === 0">{{clue.answer}}</div>
-          </div>
-          <div *ngIf="tile.text === 'Time'">
+        </div>
+        <div *ngIf="tile.text === 'Time'">
             <div *ngIf="!timerStarted">
-            <input type="number" [(ngModel)]="timeLeft">
-            <br>
-            <button mat-flat-button color="primary" (click)='startTimer()'>Start Timer</button>
+                <input type="number" [(ngModel)]="timeLeft">
+                <br>
+                <button mat-flat-button color="primary" (click)='startTimer()'>Start Timer</button>
             </div>
             <br>
               {{timeLeft}} Seconds Left....
-
-            </div>
-
+        </div>
         </mat-grid-tile>
       </mat-grid-list>
       
