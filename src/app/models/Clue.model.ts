@@ -11,6 +11,7 @@ export class Clue {
     public category_id: number;
     public game_id: any;
     public invalid_count: number;
+    public user_answer: string;
     public category: Category;
 
 
@@ -24,6 +25,7 @@ export class Clue {
         updated_at: Date,
         category_id: number,
         category: Category,
+        user_answer?: string,
         game_id?: any,
         invalid_count?: number
     ) {
@@ -36,6 +38,9 @@ export class Clue {
         this.updated_at = updated_at;
         this.category_id = category_id;
         this.category = category;
+        if(user_answer) {
+            this.user_answer = user_answer;
+        }
         if (game_id) {
             this.game_id = game_id;
         }

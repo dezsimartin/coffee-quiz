@@ -1,1 +1,20 @@
-<p>game works!</p>
+<div class="game">
+<div *ngIf="clue">
+    <mat-grid-list cols="4" rowHeight="300px">
+        <mat-grid-tile
+            *ngFor="let tile of tiles"
+            [colspan]="tile.cols"
+            [rowspan]="tile.rows"
+            [style.background]="tile.color">
+          <div *ngIf="tile.text === 'Question'">Question: {{ clue.question}} </div>
+          <div *ngIf="tile.text === 'Skip'"><button mat-flat-button color="primary" (click)="getRandomClue()">Next question</button>
+          </div>
+          <div *ngIf="tile.text === 'Answer'"> 
+            <input type="text" [(ngModel)]="answer" placeholder="Type your answer here">
+          </div>
+
+        </mat-grid-tile>
+      </mat-grid-list>
+      
+</div>
+</div>
