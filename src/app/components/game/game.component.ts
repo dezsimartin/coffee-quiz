@@ -37,7 +37,7 @@ export class GameComponent implements OnInit {
   constructor(private api: ApiCommunicationService) { }
 
   ngOnInit() {
-    this.api.getCategories().subscribe(data => { this.categories = data; console.log(this.categories); });
+    this.api.getCategories().subscribe(data => this.categories = data);
     this.getRandomClue();
   }
 
@@ -67,19 +67,15 @@ export class GameComponent implements OnInit {
       this.clue = data[0];
       this.clue.user_answer = null;
       this.requestedClues.push(this.clue);
-      console.log(this.requestedClues);
     });
   }
 
   public getCategorizedClue(){
     this.api.getCategoryClue(this.selectedCategory).subscribe(data => {
-      console.log(data);
       let rng = Math.floor((Math.random() * data.length - 1) + 1);
-      console.log(rng);
       this.clue = data[rng];
       this.clue.user_answer = null;
       this.requestedClues.push(this.clue);
-      console.log(this.requestedClues);
     })
   }
 
